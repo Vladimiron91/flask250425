@@ -1,5 +1,5 @@
 from datetime import datetime
-from sqlalchemy import String, Text, DateTime, ForeignKey, Boolean
+from sqlalchemy import String, Text, DateTime, ForeignKey, Boolean, Integer
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from src.models.base import Base, TimestampMixin
 
@@ -13,6 +13,11 @@ class Poll(Base, TimestampMixin):
     end_date: Mapped[datetime] = mapped_column(DateTime, nullable=True)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
     is_anonymous: Mapped[bool] = mapped_column(Boolean, default=True)
+    category_id: Mapped[int | None] = mapped_column(
+        Integer,
+        ForeignKey("categories.id"),
+        nullable=True
+    )
 
     # Связи
     options: Mapped[list["PollOption"]] = relationship(
@@ -27,6 +32,10 @@ class Poll(Base, TimestampMixin):
         back_populates="poll",
         uselist=False,  # One-to-One отношение
         cascade="all, delete-orphan"
+    )
+    category: Mapped["Category"] = relationship(
+        "Category",
+        back_populates="polls"
     )
 
 

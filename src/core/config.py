@@ -34,13 +34,15 @@ class Settings(BaseSettings):
 
     @property
     def database_url(self) -> str:
-        return "mysql+pymysql://{user}:{password}@{host}:{port}/{db_name}".format(
-            user=self.mysql_user,
-            password=self.mysql_password.get_secret_value(),
-            host=self.mysql_host,
-            port=self.mysql_port,
-            db_name=self.mysql_database
-        )
+        # return "mysql+pymysql://{user}:{password}@{host}:{port}/{db_name}".format(
+        #     user=self.mysql_user,
+        #     password=self.mysql_password.get_secret_value(),
+        #     host=self.mysql_host,
+        #     port=self.mysql_port,
+        #     db_name=self.mysql_database
+        # )
+        BASE_DIR = Path(__file__).resolve().parent.parent.parent
+        return f"sqlite:///{BASE_DIR}/db.sqlite3"
 
     def get_flask_config(self) -> dict[str, Any]:
         return {

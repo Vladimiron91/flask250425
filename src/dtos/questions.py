@@ -4,7 +4,7 @@ from typing import Optional, List, Self
 from pydantic import Field, model_validator
 
 from src.dtos.base import BaseDTO, IDMixin, TimestampMixin
-
+from src.dtos.category import CategoryResponseDTO
 
 
 class PollOptionCreateRequest(BaseDTO):
@@ -25,6 +25,7 @@ class PollCreateRequest(BaseDTO):
     start_date: datetime
     end_date: Optional[datetime] = None
     is_active: bool = True
+    category_id: Optional[int] = None
     is_anonymous: bool = True
     options: List[PollOptionCreateRequest] = Field(
         ...,
@@ -44,6 +45,7 @@ class PollUpdateRequest(BaseDTO):
     start_date: Optional[datetime]
     end_date: Optional[datetime]
     is_active: Optional[bool]
+    category_id: Optional[int]
     is_anonymous: Optional[bool]
 
     @model_validator(mode='after')
@@ -54,8 +56,7 @@ class PollUpdateRequest(BaseDTO):
         return self
 
 
-
-class PollOptionResponse(IDMixin, TimestampMixin):
+class PollOptionResponse(BaseDTO, IDMixin, TimestampMixin):
     poll_id: int = Field(
         ...,
         gt=0,
@@ -63,13 +64,14 @@ class PollOptionResponse(IDMixin, TimestampMixin):
     text: str
 
 
-class PollResponse(IDMixin, TimestampMixin):
+class PollResponse(BaseDTO, IDMixin, TimestampMixin):
     title: str
     description: Optional[str] = None
     start_date: datetime
     end_date: Optional[datetime] = None
     is_active: bool = True
     is_anonymous: bool = True
+    category: Optional[CategoryResponseDTO] = None
     options: List[PollOptionResponse] = Field(
         default_factory=list,
     )

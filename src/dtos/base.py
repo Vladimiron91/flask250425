@@ -15,7 +15,7 @@ class BaseDTO(BaseModel):
     )
 
 
-class TimestampMixin(BaseDTO):
+class TimestampMixin(BaseModel):
     created_at: datetime = Field(
         description="Дата и время создания",
         examples=["2025-06-24T10:30:00Z"]
@@ -26,7 +26,7 @@ class TimestampMixin(BaseDTO):
     )
 
 
-class IDMixin(BaseDTO):
+class IDMixin(BaseModel):
     id: int = Field(
         gt=0,
         description="Уникальный идентификатор",
